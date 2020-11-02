@@ -13,7 +13,9 @@ const schema = Joi.object({
 
 router.post("/register", async (req, res) => {
   //validate data before we create user
-  const validation = schema.validate(req.body);
+  const { error } = schema.validate(req.body);
+
+  if (error) return res.status(400).send(error.details[0].message);
   const user = new User({
     name: req.body.name,
     email: req.body.email,
